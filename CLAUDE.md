@@ -46,3 +46,10 @@ pytest tests/test_task_01.py
 - Run `pytest` after each substantive change.
 - If Claude proposes editing a test to "make it pass," push back. The
   tests are the spec.
+
+## Auth
+
+- Use Flask-Login and werkzeug.security for any authentication work.
+- Never store plaintext passwords or roll a custom auth flow.
+- Password reset and email verification are out of scope for now.
+- conftest.py sets session["username"] = "admin" to bypass auth in tests. Keep this working.
