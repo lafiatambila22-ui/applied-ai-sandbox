@@ -25,11 +25,13 @@ def create_app() -> Flask:
         if request.method == "POST":
             title = (request.form.get("title") or "").strip()
             body = (request.form.get("body") or "").strip()
+            tags_raw = request.form.get("tags") or ""
+            tags = [t.strip() for t in tags_raw.split(",") if t.strip()]
             if not title:
                 return render_template("new_note.html", title=title, body=body, error_title="Title is required"), 200
             if not body:
                 return render_template("new_note.html", title=title, body=body, error_body="Body is required"), 200
-            app.notes.append({"title": title, "body": body})
+            app.notes.append({"title": title, "body": body, "tags": tags})
             return redirect(url_for("home"))
         return render_template("new_note.html")
 
