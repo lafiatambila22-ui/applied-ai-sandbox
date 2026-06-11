@@ -11,4 +11,7 @@ def app():
 
 @pytest.fixture
 def client(app):
-    return app.test_client()
+    client = app.test_client()
+    with client.session_transaction() as sess:
+        sess["username"] = "admin"
+    return client

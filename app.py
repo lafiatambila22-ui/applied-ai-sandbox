@@ -5,7 +5,7 @@ describe exactly what "done" means.
 """
 from __future__ import annotations
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, abort
 
 
 def create_app() -> Flask:
@@ -25,12 +25,25 @@ def create_app() -> Flask:
         if request.method == "POST":
             title = (request.form.get("title") or "").strip()
             body = (request.form.get("body") or "").strip()
-            # TASK 01 will add validation here.
+            if not title:
+                return render_template("new_note.html", title=title, body=body, error_title="Title is required"), 200
+            if not body:
+                return render_template("new_note.html", title=title, body=body, error_body="Body is required"), 200
             app.notes.append({"title": title, "body": body})
             return redirect(url_for("home"))
         return render_template("new_note.html")
 
-    # TASK 02 will add a /notes/<idx>/delete route here.
+    @app.route("/logout", methods=["POST"])
+    def logout():
+        return redirect(url_for("home"))
+
+    @app.route("/notes/<int:idx>/delete", methods=["POST"])
+    def delete_note(idx):
+        try:
+            app.notes.pop(idx)
+        except IndexError:
+            abort(404)
+        return redirect(url_for("home"))
 
     return app
 
