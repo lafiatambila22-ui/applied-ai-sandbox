@@ -24,7 +24,7 @@ def create_app() -> Flask:
             filtered = [n for n in app.notes if needle in n["title"].lower() or needle in n["body"].lower()]
         else:
             filtered = app.notes
-        return render_template("home.html", notes=filtered, q=q)
+        return render_template("home.html", notes=filtered, q=q, total=len(app.notes))
 
     @app.route("/notes/new", methods=["GET", "POST"])
     def new_note():

@@ -30,7 +30,13 @@
     <button type="submit" style="padding: 0.4rem 0.85rem; border-radius: 6px; border: 1px solid #1a2540; background: #fff; cursor: pointer; font-size: 1rem;">Search</button>
   </form>
 
-  <h2 style="margin-top: 2rem;">Your notes ({{ notes|length }})</h2>
+  <p style="margin-top: 2rem; color: #444; font-size: 0.95rem;">
+    {%- if q -%}
+      Showing {{ notes|length }} of {{ total }} notes
+    {%- else -%}
+      {{ notes|length }} notes
+    {%- endif -%}
+  </p>
   {% if notes %}
     {% for note in notes %}
       <div class="note" style="display:flex; justify-content:space-between; align-items:flex-start;">
